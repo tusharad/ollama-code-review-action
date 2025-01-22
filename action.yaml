@@ -1,0 +1,48 @@
+name: Ollama code reviewer.
+description: Review git diff based with given model.
+
+inputs:
+  model:
+    description: The model to run
+    required: true
+  checklist:
+    description: Checklist / instructions for model that shall be checked.
+    required: true
+    default: ''
+
+runs:
+  using: composite
+  steps:
+    - uses: pydantic/ollama-action@v3
+      with:
+        model: ${{ inputs.model }}
+  
+    - name: Set up Python
+      uses: actions/setup-python@v5
+      with:
+        python-version: '3.10'
+    
+    - name: Install Python dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install ollama pydantic
+      shell: bash
+    
+    - name: Get Changed Files
+      uses: GrantBirki/git-diff-action@v2.7.0
+      id: git-diff-action
+      with:
+        raw_diff_file_output: diff.txt
+        file_output_only: "true"
+    
+    - name: Print and Save Raw Diff
+      env:
+        DIFF: ${{ steps.git-diff-action.outputs.raw-diff-path }}
+      run: cat $DIFF > diff_file.diff
+      shell: bash
+    
+    - name: Run Python Script
+      run: |
+        echo -e {{inputs.checklist}} > checklist.txt
+        python run_llm.py diff_file.diff ${{inputs.model}} checklist.txt
+      shell: bash

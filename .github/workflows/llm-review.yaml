@@ -1,0 +1,22 @@
+name: CI for ai-code-reviewer
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      with:
+        fetch-depth: 0
+
+    - uses: ./
+      with:
+        model: llama3.2
+        checklist: |
+          1. No API keys should be exposed.
