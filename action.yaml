@@ -43,6 +43,6 @@ runs:
     
     - name: Run Python Script
       run: |
-        echo -e {{inputs.checklist}} > checklist.txt
+        echo -e ${{ inputs.checklist }} > checklist.txt
         python ${GITHUB_ACTION_PATH}/run_llm.py diff_file.diff ${{inputs.model}} checklist.txt
       shell: bash
