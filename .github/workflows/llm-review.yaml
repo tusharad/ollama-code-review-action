@@ -19,4 +19,4 @@ jobs:
       with:
         model: llama3.2
         checklist: |
-          1. No API keys should be exposed.
+          1. No API keys should be shown in the code.

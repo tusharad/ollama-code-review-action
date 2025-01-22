@@ -4,7 +4,7 @@ from ollama import generate
 from pydantic import BaseModel
 
 class ChecklistReview(BaseModel):
-    pass_or_fail: bool
+    validation_success: bool
     reason: str
 
 def main():
@@ -19,19 +19,22 @@ def main():
         checklist = ""
         with open(args.checklist,'r') as f2:
             checklist = f2.read()
-        res = generate(model=args.model_name, prompt=f'''
-                    You are a code reviewer, review the below diff and ensure the checklist conditions are validated:
+        prompt_msg = f'''
+                    You are a code reviewer, review the below code changes given as 
+                    diff and ensure the checklist conditions are validated.
                     checklist:
                        {checklist}
                     diff:
                     {content}
-                    ''',
+                    '''
+        print("Generated prompt", prompt_msg)
+        res = generate(model=args.model_name, prompt=prompt_msg,
                     format=ChecklistReview.model_json_schema(),
                     options={'temperature': 0}
                     )
         review_response = ChecklistReview.model_validate_json(res.response)
 
-        if not review_response.pass_or_fail:
+        if not review_response.validation_success:
             print("Checklist failed: ", review_response.reason)
             sys.exit(1)
 
