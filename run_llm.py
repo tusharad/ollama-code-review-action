@@ -20,17 +20,6 @@ def main():
         with open(args.checklist,'r') as f2:
             checklist = f2.read()
         prompt_msg = f'''
-        You are a diligent and detail-oriented code reviewer. Your role is to review the provided git diff to ensure it satisfies all items in the given checklist. 
-
-    ### Instructions:
-    1. Carefully analyze the checklist and compare it with the changes in the provided diff.
-    2. For each checklist item, determine whether the changes meet the specified criteria.
-    3. If any checklist item is not satisfied, provide a detailed explanation specifying:
-        - The item that failed.
-        - Why it failed.
-        - Any suggestions for improvement.
-    4. If all checklist items are satisfied, confirm that the review passes.
-
     ### Checklist:
     {checklist}
 
