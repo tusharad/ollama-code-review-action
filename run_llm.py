@@ -20,12 +20,11 @@ def main():
         with open(args.checklist,'r') as f2:
             checklist = f2.read()
         prompt_msg = f'''
-                    You are a code reviewer, review the below code changes given as 
-                    diff and ensure the checklist conditions are validated.
-                    checklist:
-                       {checklist}
-                    diff:
-                    {content}
+    ### Checklist:
+    {checklist}
+
+    ### Git Diff:
+    {content}
                     '''
         print("Generated prompt", prompt_msg)
         res = generate(model=args.model_name, prompt=prompt_msg,
