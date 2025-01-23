@@ -33,7 +33,7 @@ jobs:
       - name: Run AI Code Reviewer
         uses: tusharad/ollama-code-review-action@v1
         with:
-          model: llama3.2  # Specify the LLM model for the review
+          model: qwen2.5:7b  # Specify the LLM model for the review
           checklist: |
             1. No API keys should be exposed.
             2. Avoid usage of unsafePerformIO function.
